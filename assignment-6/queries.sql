@@ -17,18 +17,3 @@ JOIN rooms   r ON r.id = l.room_id
 JOIN classes c ON c.id = l.class_id
 WHERE r.number = '204'
 ORDER BY l.weekday, l.period;
-
--- Question 2b (bonus): when room 204 is FREE during the week.
--- Returns: every (weekday, period) slot with no lesson in room 204.
-SELECT d.weekday, p.period
-FROM generate_series(1, 5) AS d(weekday)
-CROSS JOIN generate_series(1, 7) AS p(period)
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM lessons l
-    JOIN rooms r ON r.id = l.room_id
-    WHERE r.number = '204'
-      AND l.weekday = d.weekday
-      AND l.period  = p.period
-)
-ORDER BY d.weekday, p.period;
